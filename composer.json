@@ -1,0 +1,16 @@
+{
+    "name": "j/alarm-handling-system",
+    "autoload": {
+        "psr-4": {
+            "J\\AlarmHandlingSystem\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "JLineBSilva"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}

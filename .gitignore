@@ -1,0 +1,11 @@
+# IDEs CONFIGS
+.idea
+.vscode
+
+# ENVIROMENT FILES
+.env
+.env.*
+.env.local
+
+# COMPOSER DIRECTORY
+/vendor/
