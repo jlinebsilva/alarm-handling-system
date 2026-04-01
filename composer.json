@@ -2,7 +2,7 @@
     "name": "j/alarm-handling-system",
     "autoload": {
         "psr-4": {
-            "J\\AlarmHandlingSystem\\": "src/"
+            "J\\AlarmHandlingSystem\\": ""
         }
     },
     "authors": [
@@ -11,6 +11,7 @@
         }
     ],
     "require": {
-        "vlucas/phpdotenv": "^5.6"
+        "vlucas/phpdotenv": "^5.6",
+        "illuminate/database": "^12.56"
     }
 }
