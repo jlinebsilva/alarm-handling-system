@@ -11,24 +11,30 @@
 
 <div class="container">
   <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-    <a href="index.php" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+    <a href="../public/index.php" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
       <i class="bi bi-shield-check me-2" style="font-size: 2rem; color: " ></i>
       <span class="fs-4">Gerenciamento de Alarmes</span>
     </a>
 
     <ul class="nav nav-pills">
       <li class="nav-item">
-        <a href="index.php" class="nav-link <?php echo isPageActive('index.php') ?>" aria-current="page">
+        <a href="../public/index.php" aria-current="page"
+          class="nav-link <?php echo isPageActive('index.php') ?>"
+        >
           Home
         </a>
       </li>
       <li class="nav-item">
-        <a href="alarms.php" class="nav-link <?php echo isPageActive('alarms.php') ?>">
+        <a href="../public/alarms.php" 
+          class="nav-link <?php echo isPageActive('alarms.php') ?>"
+        >
           Alarmes
         </a>
       </li>
       <li class="nav-item">
-        <a href="equipaments.php" class="nav-link <?php echo isPageActive('equipaments.php') ?>">
+        <a href="../public/equipaments.php"
+          class="nav-link <?php echo isPageActive('equipaments.php') ?>"
+        >
           Equipamentos
         </a>
       </li>
