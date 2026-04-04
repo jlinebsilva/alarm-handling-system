@@ -2,21 +2,13 @@
 <?php include_once '../public/layouts/header.php' ?>
 
 <?php 
-require '../src/Config/connection.php';
+require '../bootstrap/database.php';
+require '../models/Equipament.php';
+require '../models/Alarm.php';
 
-$alarms = [];
-$alarmQuery = mysqli_query($connection, "SELECT * FROM alarms");
+$alarms = Alarm::latest('alarm_id')->get();
+$equipaments = Equipament::latest('equipament_id')->get();
 
-if ($alarmQuery) {
-    $alarms = mysqli_fetch_all($alarmQuery, MYSQLI_ASSOC);
-}
-
-$equipaments = [];
-$equipQuery = mysqli_query($connection, "SELECT * FROM equipaments");
-
-if ($equipQuery) {
-    $equipaments = mysqli_fetch_all($equipQuery, MYSQLI_ASSOC);
-}
 ?>
 
 <!-- ALARMS -->
@@ -73,7 +65,7 @@ if ($equipQuery) {
       <div class="card">
         <div class="card-header">
           <h4>Últimos Equipamentos
-            <a href="/public/equipament-create.php" class="btn btn-primary float-end">Adicionar</a>
+            <a href="equipament-create.php" class="btn btn-primary float-end">Adicionar</a>
           </h4>
         </div>
 
