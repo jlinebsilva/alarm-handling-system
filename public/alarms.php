@@ -12,10 +12,12 @@ $alarms = Alarm::with(['equipament', 'classification'])->get();
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">
-                    <h4>Lista de Alarmes
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4>Lista de Alarmes</h4>
+                    <div class="d-flex gap-2">
+                        <a href="alarm-occurrences.php" class="btn btn-dark float-end">Atuados</a>
                         <a href="alarm-create.php" class="btn btn-primary float-end">Adicionar</a>
-                    </h4>
+                    </div>
                 </div>
 
                 <div class="card-body">
