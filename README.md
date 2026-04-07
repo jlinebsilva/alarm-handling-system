@@ -24,7 +24,7 @@
 <br />
 
 ## ⌨ Ajustes Iniciais
-- Após iniciar o servidor e o banco de dados, gere as tabelas no banco de dados com o script:
+- Após iniciar o servidor e o banco de dados, gere a base de dados principal e demais tabelas com o script:
 
     ```bash
     php database/migrate.php
