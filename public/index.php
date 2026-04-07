@@ -7,13 +7,12 @@ require '../models/Equipament.php';
 require '../models/Alarm.php';
 
 $alarms = Alarm::latest('alarm_id')->get();
-$equipaments = Equipament::latest('equipament_id')->get();
+$equipaments = Equipament::with('type')->latest('equipament_id')->get();
 
 ?>
 
 <!-- ALARMS -->
 <div class="container mt-4">
-  <?php include 'message.php'?>
   <div class="row">
     <div class="col-md-12">
       <div class="card">
@@ -38,14 +37,14 @@ $equipaments = Equipament::latest('equipament_id')->get();
             <tbody>
             <?php foreach($alarms as $alarm): ?>
               <tr>
-                <td><?= htmlspecialchars($alarm['alarm_description']) ?></td>
-                <td><?= date('d/m/Y H:i', strtotime($alarm['alarm_register_date'])) ?></td>
-                <td><?= htmlspecialchars($alarm['alarm_equipament']) ?></td>
-                <td><?= htmlspecialchars($alarm['alarm_classification']) ?></td>
+                <td><?= htmlspecialchars($alarm->alarm_description) ?></td>
+                <td><?= date('d/m/Y H:i', strtotime($alarm->alarm_register_date)) ?></td>
+                <td><?= $alarm->equipament->equipament_serie_number ?? 'N/A' ?></td>
+                <td><?= $alarm->classification->name ?? 'N/A' ?></td>
                 <td>
-                  <a href="alarm-details.php?alarm_id=<?= $alarm['alarm_id'] ?>" class="btn btn-secondary btn-sm">
-                    Visualizar
-                  </a>
+                <a href="alarm-details.php?alarm_id=<?= $alarm->alarm_id ?>" class="btn btn-secondary btn-sm">
+                  Visualizar
+                </a>
                 </td>
               </tr>
               <?php endforeach; ?>
@@ -85,7 +84,7 @@ $equipaments = Equipament::latest('equipament_id')->get();
               <tr>
                 <td><?= htmlspecialchars($equip['equipament_serie_number']) ?></td>
                 <td><?= date('d/m/Y H:i', strtotime($equip['equipament_register_date'])) ?></td>
-                <td><?= htmlspecialchars($equip['equipament_type']) ?></td>
+                <td><?= htmlspecialchars($equip->type->name ?? 'N/A') ?></td>
                 <td>
                   <a href="equipament-details.php?equipament_id=<?= $equip['equipament_id'] ?>" class="btn btn-secondary btn-sm">
                     Visualizar
