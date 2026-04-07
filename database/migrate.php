@@ -56,8 +56,8 @@ if (!Capsule::schema()->hasTable('alarms')) {
             ->on('equipaments')
             ->onDelete('cascade');
 
-        $table->unsignedInteger('classification_id');
-        $table->foreign('classification_id')
+        $table->unsignedInteger('alarm_classification_id');
+        $table->foreign('alarm_classification_id')
             ->references('id')
             ->on('alarm_classifications');
     });
