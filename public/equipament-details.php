@@ -1,10 +1,17 @@
-<?php include '../components/head.php' ?>
-<?php include '../components/header.php' ?>
+<?php include '../public/layouts/head.php' ?>
+<?php include '../public/layouts/header.php' ?>
 
 <?php
-    session_start();
-    require '../services/connection.php'
+    require '../bootstrap/database.php';
+    require '../models/Equipament.php';
+    require '../models/EquipamentType.php';
+
+    $equipament = null;
+    if (isset($_GET['equipament_id'])) {
+        $equipament = Equipament::with('type')->find($_GET['equipament_id']);
+    }
 ?>
+
 
 <div class="container mt-5">
     <div class="row">
@@ -19,47 +26,37 @@
                 </div>
 
                 <div class="card-body">
-                    <?php 
-                        if (isset($_GET['equipament_id'])) {
-                            $equipament_id = mysqli_real_escape_string($connection, $_GET['equipament_id']);
-                            $sql = "SELECT * FROM equipaments WHERE equipament_id='$equipament_id'";
-                            $query = mysqli_query($connection, $sql);
-
-                            if (mysqli_num_rows($query) > 0) {
-                                $equipament = mysqli_fetch_array($query);
-                            }
-                    ?>
+                    <?php if ($equipament): ?>
                     <form action="" method="">
-                        <input type="hidden" name="equipament_id" value="<?=$equipament['equipament_id']?>" >
+                        <input type="hidden" name="equipament_id" value="<?= $equipament->equipament_id ?>" >
                         <div class="mb-3">
                             <label for="">Número de Série</label>
-                            <input disabled type="text" name="equipament_serie_number" value="<?=$equipament['equipament_serie_number']?>" class="form-control">
+                            <input disabled type="text" name="equipament_serie_number" value="<?= htmlspecialchars($equipament->equipament_serie_number) ?>" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label for="">Data de Cadastro</label>
-                            <input disabled type="datetime-local" name="equipament_register_date" value="<?=$equipament['equipament_register_date']?>" class="form-control">
+                            <input disabled type="datetime-local" name="equipament_register_date" value="<?= $equipament->equipament_register_date ?>" class="form-control">
                         </div>
                         
-                        <label for="">Selecione um Tipo</label>
-                        <select disabled class="form-select mb-3" name="equipament_type" value="<?=$equipament['equipament_type']?>">
-                            <option value="Tensao">Tensão</option>
-                            <option value="Corrente">Corrente</option>
-                            <option value="Óleo">Óleo</option>
-                        </select>
+                        <div class="mb-3">
+                            <label for="">Tipo</label>
+                            <input disabled type="text" class="form-control" value="<?= htmlspecialchars($equipament->type->name ?? 'N/A') ?>">
+                        </div>
                         
                         <div class="mb-3">
-                            <a href="equipament-update.php?equipament_id=<?=$equipament['equipament_id']?>" class="btn btn-outline-success">
+                            <a href="equipament-update.php?equipament_id=<?= $equipament->equipament_id ?>" class="btn btn-outline-success">
                                 Editar informações
                             </a>
                         </div>
                     </form>
-                    <?php 
-                        } else {
-                            echo "<h5>Equipamento Não Encontrado</h5>";
-                        }
-                    ?>
+                    <?php else: ?>
+                        <h5>Equipamento Não Encontrado</h5>
+                    <?php endif; ?>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<?php include '../public/layouts/footer.php' ?>

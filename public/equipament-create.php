@@ -1,5 +1,12 @@
-<?php include '../components/head.php' ?>
-<?php include '../components/header.php' ?>
+<?php include '../public/layouts/head.php' ?>
+<?php include '../public/layouts/header.php' ?>
+
+<?php
+require '../bootstrap/database.php';
+require '../models/EquipamentType.php';
+
+$types = EquipamentType::all();
+?>
 
 <div class="container my-5">
     <div class="row">
@@ -11,21 +18,20 @@
                     </h4>
                 </div>
                 <div class="card-body">
-                    <form action="../services/equipament-actions.php" method="post">
+                    <form action="../actions/equipaments_actions.php" method="post">
                         <div class="mb-3">
                             <label for="">Número de Série</label>
-                            <input type="text" name="equipament_serie_number" class="form-control">
+                            <input type="text" name="equipament_serie_number" class="form-control" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="">Data de Cadastro</label>
-                            <input type="datetime-local" name="equipament_register_date" class="form-control">
-                        </div>
-                        
+                                    
                         <label for="">Selecione um Tipo</label>
-                        <select class="form-select mb-3" name="equipament_type">
-                            <option value="Tensao">Tensão</option>
-                            <option value="Corrente">Corrente</option>
-                            <option value="Óleo">Óleo</option>
+                        <select class="form-select mb-3" name="equipament_type_id" required>
+                            <option value="">Selecione um tipo</option>
+                            <?php foreach ($types as $type): ?>
+                                <option value="<?= $type->id ?>">
+                                    <?= $type->name ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
 
                         <div class="mb-3">
@@ -40,4 +46,4 @@
     </div>
 </div>
 
-<?php include '../components/footer.php'?>
+<?php include '../public/layouts/footer.php'?>

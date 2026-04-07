@@ -1,12 +1,15 @@
-<?php include_once '../components/head.php' ?>
-<?php include_once '../components/header.php' ?>
+<?php include_once '../public/layouts/head.php' ?>
+<?php include_once '../public/layouts/header.php' ?>
 
 <?php 
-  require '../services/connection.php'
+require '../bootstrap/database.php';
+require '../models/Equipament.php';
+
+$equipaments = Equipament::with('type')->get();
+
 ?>
 
 <div class="container mt-4">
-    <?php include '../services/message.php' ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -17,54 +20,37 @@
                 </div>
 
                 <div class="card-body">
+                    <?php if (count($equipaments) > 0): ?>
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <th>Número de Série</th>
-                                <th>Data de Cadastro</th>
-                                <th>Tipo</th>
-                                <th>Ações</th>
-                            </tr>
+                        <tr>
+                            <th>Série</th>
+                            <th>Data</th>
+                            <th>Tipo</th>
+                            <th>Ações</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <?php
-                                $sql = 'SELECT * FROM equipaments';
-                                $equipaments = mysqli_query($connection, $sql);
-                                
-                                if (mysqli_num_rows($equipaments) > 0) {
-                                    foreach($equipaments as $equipament) {
-                            ?>
+                            <?php foreach($equipaments as $equip): ?>
                             <tr>
-                                <td><?=$equipament['equipament_serie_number'] ?></td>
-                                <td><?=date('d/m/Y H:i', strtotime($equipament['equipament_register_date']))?></td>
-                                <td><?=$equipament['equipament_type'] ?></td>
-                                <td class="d-flex gap-2">
-                                    <a href="equipament-details.php?equipament_id=<?=$equipament['equipament_id'] ?>" class="btn btn-secondary btn-sm">
-                                        <span class="bi-eye-fill"></span>&nbsp; Visualizar
-                                    </a>
-                                    <a href="equipament-update.php?equipament_id=<?=$equipament['equipament_id'] ?>" class="btn btn-success btn-sm">
-                                        <span class="bi-pencil-fill"></span>&nbsp; Editar
-                                    </a>
-                                    <form action="../services/equipament-actions.php" method="post" class="d-inline">
-                                        <button onclick="return confirm('Tem certeza que deseja excluir?')" class="btn btn-danger btn-sm" value="<?=$equipament['equipament_id'] ?>" type="submit" name="delete_equipament">
-                                            <span class="bi-trash3-fill"></span>&nbsp;
-                                            Apagar
-                                        </button>
-                                    </form>
+                                <td><?= htmlspecialchars($equip['equipament_serie_number']) ?></td>
+                                <td><?= date('d/m/Y H:i', strtotime($equip['equipament_register_date'])) ?></td>
+                                <td><?= htmlspecialchars($equip->type->name ?? 'N/A') ?></td>
+                                <td><a href="equipament-details.php?equipament_id=<?= $equip->equipament_id ?>" class="btn btn-secondary btn-sm">
+                                    Visualizar
+                                </a>
                                 </td>
                             </tr>
-                                <?php 
-                                    }
-                                } else {
-                                        echo '<h5>Nenhum Equipamento Encontrado</h5>';
-                                    }
-                                ?>
+                        <?php endforeach; ?>
                         </tbody>
                     </table>
+                    <?php else: ?>
+                        <p>Nenhum Equipamento Encontrado</p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>  
 </div>
     
-<?php include_once '../components/footer.php' ?>
+<?php include_once '../public/layouts/footer.php' ?>
