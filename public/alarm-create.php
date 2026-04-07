@@ -1,8 +1,17 @@
-<?php include '../components/head.php' ?>
-<?php include '../components/header.php' ?>
+<?php include '../public/layouts/head.php' ?>
+<?php include '../public/layouts/header.php' ?>
+
+<?php
+require '../bootstrap/database.php';
+require '../models/Equipament.php';
+require '../models/AlarmClassification.php';
+
+$equipaments = Equipament::all();
+$classifications = AlarmClassification::all();
+
+?>
 
 <div class="container my-5">
-    <?php include '../services/message.php'?>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -12,22 +21,31 @@
                     </h4>
                 </div>
                 <div class="card-body">
-                    <form action="../services/alarm-actions.php" method="post">
+                    <form action="../actions/alarm_actions.php" method="post">
                         <div class="mb-3">
                             <label for="">Equipamento Relacionado</label>
-                            <input type="text" name="alarm_equipament" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="">Data de Cadastro</label>
-                            <input type="datetime-local" name="alarm_register_date" class="form-control">
-                        </div>
-                        
-                        <label for="">Selecione uma Classificação</label>
-                        <select class="form-select mb-3" name="alarm_classification">
-                            <option value="Urgente">Urgente</option>
-                            <option value="Emergente">Emergente</option>
-                            <option value="Ordinario">Ordinário</option>
+                            <select class="form-select mb-3" name="equipament_id" required>
+                            <option value="">Selecione um equipamento</option>
+
+                            <?php foreach ($equipaments as $equip): ?>
+                                <option value="<?= $equip->equipament_id ?>">
+                                    <?= htmlspecialchars($equip->equipament_serie_number) ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
+                        </div>
+                                                
+                        <div class="mb-3">
+                            <label for="">Selecione uma Classificação</label>
+                            <select class="form-select" name="classification_id" required>
+                                <option value="">Selecione uma classificação</option>
+                                <?php foreach ($classifications as $c): ?>
+                                    <option value="<?= $c->id ?>">
+                                        <?= $c->name ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
 
                         <div class="mb-3">
                             <label for="">Descrição do Alarme</label>
@@ -46,4 +64,4 @@
     </div>
 </div>
 
-<?php include '../components/footer.php'?>
+<?php include '../public/layouts/footer.php'?>

@@ -1,11 +1,13 @@
-<?php include_once '../components/head.php' ?>
-<?php include_once '../components/header.php' ?>
+<?php include_once '../public/layouts/head.php' ?>
+<?php include_once '../public/layouts/header.php' ?>
 
-<?php 
-  require '../services/connection.php'
+<?php
+require '../bootstrap/database.php';
+require '../models/Alarm.php';
+
+$alarms = Alarm::with(['equipament', 'classification'])->get();
 ?>
 
-<?php include '../services/message.php' ?>
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-12">
@@ -17,6 +19,7 @@
                 </div>
 
                 <div class="card-body">
+                    <?php if (count($alarms) > 0): ?>
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -28,45 +31,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                                $sql = 'SELECT * FROM alarms';
-                                $alarms = mysqli_query($connection, $sql);
-                                
-                                if (mysqli_num_rows($alarms) > 0) {
-                                    foreach($alarms as $alarm) {
-                            ?>
+                            <?php foreach($alarms as $alarm): ?>
                             <tr>
-                                <td><?=$alarm['alarm_description'] ?></td>
-                                <td><?=date('d/m/Y H:i', strtotime($alarm['alarm_register_date']))?></td>
-                                <td><?=$alarm['alarm_equipament'] ?></td>
-                                <td><?=$alarm['alarm_classification'] ?></td>
-                                <td class="d-flex gap-2">
-                                    <a href="alarm-details.php?alarm_id=<?=$alarm['alarm_id'] ?>" class="btn btn-secondary btn-sm">
-                                        <span class="bi-eye-fill"></span>&nbsp; Visualizar
-                                    </a>
-                                    <a href="alarm-update.php?alarm_id=<?=$alarm['alarm_id'] ?>" class="btn btn-success btn-sm">
-                                        <span class="bi-pencil-fill"></span>&nbsp; Editar
-                                    </a>
-                                    <form action="../services/alarm-actions.php" method="post" class="d-inline">
-                                        <button onclick="return confirm('Tem certeza que deseja excluir?')" class="btn btn-danger btn-sm" value="<?=$alarm['alarm_id'] ?>" type="submit" name="delete_alarm">
-                                            <span class="bi-trash3-fill"></span>&nbsp;
-                                            Apagar
-                                        </button>
-                                    </form>
+                                <td><?= htmlspecialchars($alarm->alarm_description) ?></td>
+                                <td><?= date('d/m/Y H:i', strtotime($alarm->alarm_register_date)) ?></td>
+                                <td><?= $alarm->equipament->equipament_serie_number ?? 'N/A' ?></td>
+                                <td><?= $alarm->classification->name ?? 'N/A' ?></td>
+                                <td>
+                                <a href="alarm-details.php?alarm_id=<?= $alarm->alarm_id ?>" class="btn btn-secondary btn-sm">
+                                    Visualizar
+                                </a>
                                 </td>
                             </tr>
-                                <?php 
-                                    }
-                                } else {
-                                        echo '<h5>Nenhum Alarme Encontrado</h5>';
-                                    }
-                                ?>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
+                    <?php else: ?>
+                        <p>Nenhum Alarme Encontrado</p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>  
 </div>
     
-<?php include_once '../components/footer.php' ?>
+<?php include_once '../public/layouts/footer.php' ?>
