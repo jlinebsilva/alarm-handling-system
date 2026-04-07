@@ -3,7 +3,10 @@
     "autoload": {
         "psr-4": {
             "J\\AlarmHandlingSystem\\": ""
-        }
+        },
+        "classmap": [
+            "models/"
+        ]
     },
     "authors": [
         {
