@@ -40,9 +40,15 @@ $alarms = Alarm::with(['equipament', 'classification'])->get();
                                 <td><?= $alarm->equipament->equipament_serie_number ?? 'N/A' ?></td>
                                 <td><?= $alarm->classification->name ?? 'N/A' ?></td>
                                 <td>
-                                <a href="alarm-details.php?alarm_id=<?= $alarm->alarm_id ?>" class="btn btn-secondary btn-sm">
-                                    Visualizar
-                                </a>
+                                    <a href="alarm-details.php?alarm_id=<?= $alarm->alarm_id ?>" class="btn btn-secondary btn-sm">
+                                        Visualizar
+                                    </a>
+                                    <form action="../actions/alarm_actions.php" method="post" class="d-inline">
+                                        <input type="hidden" name="alarm_id" value="<?= $alarm->alarm_id ?>">
+                                        <button type="submit" name="delete_alarm" class="btn btn-danger btn-sm ms-2" onclick="return confirm('Tem certeza que deseja excluir este alarme?');">
+                                            Apagar
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

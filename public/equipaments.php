@@ -36,10 +36,17 @@ $equipaments = Equipament::with('type')->get();
                                 <td><?= htmlspecialchars($equip['equipament_serie_number']) ?></td>
                                 <td><?= date('d/m/Y H:i', strtotime($equip['equipament_register_date'])) ?></td>
                                 <td><?= htmlspecialchars($equip->type->name ?? 'N/A') ?></td>
-                                <td><a href="equipament-details.php?equipament_id=<?= $equip->equipament_id ?>" class="btn btn-secondary btn-sm">
-                                    Visualizar
-                                </a>
-                                </td>
+                                <td>
+                            <a href="equipament-details.php?equipament_id=<?= $equip->equipament_id ?>" class="btn btn-secondary btn-sm">
+                                Visualizar
+                            </a>
+                            <form action="../actions/equipaments_actions.php" method="post" class="d-inline">
+                                <input type="hidden" name="equipament_id" value="<?= $equip->equipament_id ?>">
+                                <button type="submit" name="delete_equipament" class="btn btn-danger btn-sm ms-2" onclick="return confirm('Tem certeza que deseja excluir este equipamento?');">
+                                    Apagar
+                                </button>
+                            </form>
+                        </td>
                             </tr>
                         <?php endforeach; ?>
                         </tbody>
